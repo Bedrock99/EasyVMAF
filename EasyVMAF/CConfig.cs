@@ -24,7 +24,7 @@ namespace EasyVMAF
 
         public static bool CreateTempFilesInSameFolderAsSourceFiles = true; 
         public static string TempFilesFolder = Application.StartupPath;
-        public static bool AutoDeleteTempFiles = true;
+        public static bool AutoDeleteTempFiles = false;
 
         #endregion
 

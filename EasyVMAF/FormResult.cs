@@ -20,10 +20,9 @@ namespace EasyVMAF
 {
     public partial class FormResult : Form
     {
-        //TODO Show Video frame when going on chart?
-
         #region --- Variables ---
 
+        private string m_strOrgFileDecoded;
         private CResult m_pResult;
         private CResult m_pCompare;
 
@@ -31,11 +30,12 @@ namespace EasyVMAF
 
         #region --- Constructor / Shown ---
 
-        public FormResult(CResult pResult_, FormMain f_)
+        public FormResult(string strOrgFileDecoded_, CResult pResult_, FormMain f_)
         {
             InitializeComponent();
             Icon = Properties.Resources.EasyVMAFicon;
             m_pResult = pResult_;
+            m_strOrgFileDecoded = strOrgFileDecoded_;
             Point p = new Point(f_.Left + f_.Width / 2 - Width / 2, f_.Top + f_.Height / 2 - Height / 2);
             Location = p;
 
@@ -52,6 +52,15 @@ namespace EasyVMAF
             Location = p;
 
             LoadCompare();
+        }
+
+        #endregion
+
+        #region --- Closing ---
+
+        private void FormResult_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            ucVideoViewer1.Close();
         }
 
         #endregion
@@ -78,6 +87,8 @@ namespace EasyVMAF
             chartArea.CursorY.AutoScroll = true;
             chartArea.CursorX.IsUserSelectionEnabled = true;
             chartArea.CursorY.IsUserSelectionEnabled = true;
+
+            ucVideoViewer1.SetVideos(m_strOrgFileDecoded, m_pResult);
         }
 
         #endregion
@@ -117,6 +128,8 @@ namespace EasyVMAF
             chartArea.CursorY.AutoScroll = true;
             chartArea.CursorX.IsUserSelectionEnabled = true;
             chartArea.CursorY.IsUserSelectionEnabled = true;
+
+            ucVideoViewer1.SetVideos(m_pResult, m_pCompare);
         }
 
         #endregion

@@ -45,22 +45,26 @@ namespace EasyVMAF
                         string strRed = pDecode.StandardError.ReadLine();
                         strOutput += strRed + "\r\n";
                         Console.WriteLine(strRed);
+                        //TODO Error handling in reading output...
                         if(strRed.Contains("Stream #") && strRed.Contains("Video:"))
                         {
-                            string strResolution = strRed.Substring(0, strRed.IndexOf("["));
-                            strResolution = strResolution.Substring(strResolution.LastIndexOf(",") + 1);
-                            strResolution = strResolution.Trim();
-                            iX = int.Parse(strResolution.Substring(0, strResolution.IndexOf("x")));
-                            iY = int.Parse(strResolution.Substring(strResolution.IndexOf("x") + 1));
+                            try
+                            {
+                                string strResolution = strRed.Substring(0, strRed.IndexOf("["));
+                                strResolution = strResolution.Substring(strResolution.LastIndexOf(",") + 1);
+                                strResolution = strResolution.Trim();
+                                iX = int.Parse(strResolution.Substring(0, strResolution.IndexOf("x")));
+                                iY = int.Parse(strResolution.Substring(strResolution.IndexOf("x") + 1));
 
-                            string strFps = strRed.Substring(0, strRed.IndexOf(" fps,"));
-                            strFps = strFps.Substring(strFps.LastIndexOf(",") + 1);
-                            strFps = strFps.Trim();
-                            dblFps = double.Parse(strFps, CultureInfo.InvariantCulture);
+                                string strFps = strRed.Substring(0, strRed.IndexOf(" fps,"));
+                                strFps = strFps.Substring(strFps.LastIndexOf(",") + 1);
+                                strFps = strFps.Trim();
+                                dblFps = double.Parse(strFps, CultureInfo.InvariantCulture);
 
-                            if (tsDuration != TimeSpan.Zero)
-                                CheckSize(iX, iY, dblFps, tsDuration, strOut_);
-
+                                if (tsDuration != TimeSpan.Zero)
+                                    CheckSize(iX, iY, dblFps, tsDuration, strOut_);
+                            }
+                            catch { }
                         }
                         if (strRed.Contains("Duration:"))
                         {

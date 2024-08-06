@@ -126,7 +126,7 @@ namespace EasyVMAF
 
         private void CalcAndShowResults()
         {
-            m_pResult = new CResult(m_strOrgFile, m_strConvFile, m_strConvFileVmaf);
+            m_pResult = new CResult(m_strOrgFile, m_strConvFile, m_strConvFileDecoded, m_strConvFileVmaf);
             Invoke((MethodInvoker)delegate
             {
                 Height = 50;
@@ -161,7 +161,7 @@ namespace EasyVMAF
 
         private void showResultChartToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new FormResult(m_pResult, (FormMain)Parent.Parent).Show();
+            new FormResult(m_strOrgFileDecoded, m_pResult, (FormMain)Parent.Parent).Show();
         }
 
         #endregion

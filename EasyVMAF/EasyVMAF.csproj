@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="CConfig.cs" />
     <Compile Include="CResult.cs" />
+    <Compile Include="Cy4mReader.cs" />
     <Compile Include="FormSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,6 +100,12 @@
     <Compile Include="UCDoVMAF.Designer.cs">
       <DependentUpon>UCDoVMAF.cs</DependentUpon>
     </Compile>
+    <Compile Include="UCVideoViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCVideoViewer.Designer.cs">
+      <DependentUpon>UCVideoViewer.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AboutBox_EasyVMAF.resx">
       <DependentUpon>AboutBox_EasyVMAF.cs</DependentUpon>
     </EmbeddedResource>
@@ -126,6 +133,9 @@
     </Compile>
     <EmbeddedResource Include="UCDoVMAF.resx">
       <DependentUpon>UCDoVMAF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCVideoViewer.resx">
+      <DependentUpon>UCVideoViewer.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

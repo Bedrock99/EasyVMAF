@@ -20,6 +20,7 @@ namespace EasyVMAF
 
         public string OriginalFile { get; private set; }
         public string ConvertedFile { get; private set; } 
+        public string ConvertedFileDecoded { get; private set; }
         public string VmafFile { get; private set; }
 
         public string VMAF_Version { get; private set; } = "ERROR";
@@ -41,10 +42,11 @@ namespace EasyVMAF
 
         #region --- Constructor ---
 
-        public CResult(string strOrgFile_, string strConvFile_, string strVmafFile_)
+        public CResult(string strOrgFile_, string strConvFile_, string strConvFileDecoded_, string strVmafFile_)
         {
             OriginalFile = strOrgFile_;
             ConvertedFile = strConvFile_;
+            ConvertedFileDecoded = strConvFileDecoded_;
             VmafFile = strVmafFile_;
 
             if (!File.Exists(strOrgFile_) || !File.Exists(ConvertedFile) || !File.Exists(VmafFile))

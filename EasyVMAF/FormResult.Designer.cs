@@ -41,24 +41,29 @@
             this.lbl_FileSize = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.lbl_VMAF_Version = new System.Windows.Forms.Label();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.ucVideoViewer1 = new EasyVMAF.UCVideoViewer();
             ((System.ComponentModel.ISupportInitialize)(this.chart_vmaf)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // chart_vmaf
             // 
-            this.chart_vmaf.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             chartArea1.Name = "ChartArea1";
             this.chart_vmaf.ChartAreas.Add(chartArea1);
+            this.chart_vmaf.Dock = System.Windows.Forms.DockStyle.Fill;
             legend1.Name = "Legend1";
             legend1.Title = "Legend:";
             this.chart_vmaf.Legends.Add(legend1);
-            this.chart_vmaf.Location = new System.Drawing.Point(12, 75);
+            this.chart_vmaf.Location = new System.Drawing.Point(3, 3);
             this.chart_vmaf.Name = "chart_vmaf";
             this.chart_vmaf.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
-            this.chart_vmaf.Size = new System.Drawing.Size(760, 327);
+            this.chart_vmaf.Size = new System.Drawing.Size(746, 361);
             this.chart_vmaf.TabIndex = 0;
             this.chart_vmaf.Text = "chart_VMAF";
             title1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
@@ -172,20 +177,67 @@
             this.lbl_VMAF_Version.Text = "-";
             this.lbl_VMAF_Version.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(12, 75);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(760, 393);
+            this.tabControl1.TabIndex = 5;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.chart_vmaf);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(752, 367);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "VMAF Chart";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.ucVideoViewer1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(752, 367);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Video Images";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // ucVideoViewer1
+            // 
+            this.ucVideoViewer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ucVideoViewer1.Location = new System.Drawing.Point(3, 3);
+            this.ucVideoViewer1.Name = "ucVideoViewer1";
+            this.ucVideoViewer1.Size = new System.Drawing.Size(746, 361);
+            this.ucVideoViewer1.TabIndex = 0;
+            // 
             // FormResult
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 414);
+            this.ClientSize = new System.Drawing.Size(784, 480);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.chart_vmaf);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(800, 300);
             this.Name = "FormResult";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Result for ...";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormResult_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.chart_vmaf)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -202,5 +254,9 @@
         private System.Windows.Forms.Label lbl_Bitrate;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lbl_VMAF_Version;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private UCVideoViewer ucVideoViewer1;
     }
 }

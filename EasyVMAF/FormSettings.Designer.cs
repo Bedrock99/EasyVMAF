@@ -105,9 +105,9 @@
             this.cb_AutoDeleteTempFiles.AutoSize = true;
             this.cb_AutoDeleteTempFiles.Location = new System.Drawing.Point(12, 88);
             this.cb_AutoDeleteTempFiles.Name = "cb_AutoDeleteTempFiles";
-            this.cb_AutoDeleteTempFiles.Size = new System.Drawing.Size(191, 17);
+            this.cb_AutoDeleteTempFiles.Size = new System.Drawing.Size(347, 17);
             this.cb_AutoDeleteTempFiles.TabIndex = 5;
-            this.cb_AutoDeleteTempFiles.Text = "Delete temporary files automatically";
+            this.cb_AutoDeleteTempFiles.Text = "Delete temporary files automatically (Video comparision will not work)";
             this.cb_AutoDeleteTempFiles.UseVisualStyleBackColor = true;
             // 
             // FormSettings
