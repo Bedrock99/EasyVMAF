@@ -100,8 +100,11 @@ namespace EasyVMAF
             ofd.Multiselect = false;
             ofd.RestoreDirectory = string.IsNullOrEmpty(tb_BrowseOrgFile.Text);
             ofd.Title = "Please select original video file";
-            ofd.InitialDirectory = Path.GetDirectoryName(tb_BrowseOrgFile.Text);
-            ofd.FileName = tb_BrowseOrgFile.Text;
+            if (File.Exists(tb_BrowseOrgFile.Text))
+            {
+                ofd.InitialDirectory = Path.GetDirectoryName(tb_BrowseOrgFile.Text);
+                ofd.FileName = tb_BrowseOrgFile.Text;
+            }
             if(ofd.ShowDialog() == DialogResult.OK)
                 tb_BrowseOrgFile.Text = ofd.FileName;
         }
