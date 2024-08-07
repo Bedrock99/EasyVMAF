@@ -25,6 +25,7 @@ namespace EasyVMAF
         private string m_strOrgFileDecoded;
         private CResult m_pResult;
         private CResult m_pCompare;
+        private Point m_pMenuPosition;
 
         #endregion
 
@@ -38,8 +39,6 @@ namespace EasyVMAF
             m_strOrgFileDecoded = strOrgFileDecoded_;
             Point p = new Point(f_.Left + f_.Width / 2 - Width / 2, f_.Top + f_.Height / 2 - Height / 2);
             Location = p;
-
-            LoadInfos();
         }
 
         public FormResult(CResult pResult_, CResult pCompare_, FormMain f_)
@@ -50,8 +49,14 @@ namespace EasyVMAF
             m_pCompare = pCompare_;
             Point p = new Point(f_.Left + f_.Width / 2 - Width / 2, f_.Top + f_.Height / 2 - Height / 2);
             Location = p;
+        }
 
-            LoadCompare();
+        private void FormResult_Shown(object sender, EventArgs e)
+        {
+            if (m_pCompare == null)
+                LoadInfos();
+            else
+                LoadCompare();
         }
 
         #endregion
@@ -72,7 +77,7 @@ namespace EasyVMAF
             Text = $"Results for {Path.GetFileName(m_pResult.ConvertedFile)}";
 
             lbl_VMAF_Version.Text = m_pResult.VMAF_Version;
-            lbl_VMAF_Score.Text = m_pResult.VMAF_Score;
+            lbl_VMAF_Score.Text = m_pResult.VMAF_Score + " of 100.0";
             lbl_FileSize.Text = m_pResult.FileSizeDifference;
             lbl_Bitrate.Text = m_pResult.BitrateDifference;
 
@@ -143,6 +148,23 @@ namespace EasyVMAF
             chart_vmaf.Series[strName].Color = clr_;
             foreach (DataPoint p in lstPoints_)
                 chart_vmaf.Series[strName].Points.Add(p);
+        }
+
+        #endregion
+
+        #region --- Go to video frame ---
+
+        private void goToVideoFrameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChartArea chartArea = chart_vmaf.ChartAreas[0];
+            double xValue = chartArea.AxisX.PixelPositionToValue(m_pMenuPosition.X);
+            tabControl1.SelectTab(1);
+            ucVideoViewer1.GoToFrame(Convert.ToInt32(xValue));
+        }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+            m_pMenuPosition = chart_vmaf.PointToClient(System.Windows.Forms.Cursor.Position);
         }
 
         #endregion

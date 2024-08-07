@@ -3,8 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -175,7 +177,17 @@ namespace EasyVMAF
 
         Bitmap GetImageFromYuvBytes(byte[] byLuminance, byte[] byU, byte[] byV)
         {
+            //Get Bitmap Data
             Bitmap bmp = new Bitmap(Width, Height);
+            BitmapData bitmapData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+            int bytesPerPixel = Image.GetPixelFormatSize(bitmapData.PixelFormat) / 8;
+            int byteCount = bitmapData.Stride * bitmapData.Height;
+            byte[] pixels = new byte[byteCount];
+
+            Marshal.Copy(bitmapData.Scan0, pixels, 0, byteCount);
+
+            //Draw on Bitmap
             int iLuminance = 0;
             int iColor = 0;
             for (int y = 0; y < Height; y++)
@@ -186,10 +198,21 @@ namespace EasyVMAF
                     if (iColor >= byU.Length)
                         iColor = byU.Length - 1;
                     YUV_RGB yuv = new YUV_RGB(byLuminance[iLuminance], byU[iColor], byV[iColor]);
-                    bmp.SetPixel(x, y, Color.FromArgb(255, yuv.R, yuv.G, yuv.B));
+
+                    int pixelIndex = (y * bitmapData.Stride) + (x * bytesPerPixel);
+
+                    pixels[pixelIndex] = (byte)yuv.B;
+                    pixels[pixelIndex + 1] = (byte)yuv.G;
+                    pixels[pixelIndex + 2] = (byte)yuv.R;
+                    pixels[pixelIndex + 3] = 255;
+                    
                     iLuminance++;
                 }
             }
+
+            //Save Bitmap
+            Marshal.Copy(pixels, 0, bitmapData.Scan0, byteCount);
+            bmp.UnlockBits(bitmapData);
             return bmp;
         }
 

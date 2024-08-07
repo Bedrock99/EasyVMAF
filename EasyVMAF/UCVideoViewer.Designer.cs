@@ -28,12 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.tb_Scroll = new System.Windows.Forms.TrackBar();
-            this.timerScroll = new System.Windows.Forms.Timer(this.components);
             this.pb_Image = new System.Windows.Forms.PictureBox();
             this.lbl_CurFrame = new System.Windows.Forms.Label();
-            this.p_Image = new PanelNoScroll();
+            this.p_Image = new EasyVMAF.PanelNoScroll();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lbl_Vmaf2 = new System.Windows.Forms.Label();
             this.lbl_Vmaf1 = new System.Windows.Forms.Label();
@@ -54,11 +52,6 @@
             this.tb_Scroll.TickStyle = System.Windows.Forms.TickStyle.None;
             this.tb_Scroll.ValueChanged += new System.EventHandler(this.tb_Scroll_ValueChanged);
             // 
-            // timerScroll
-            // 
-            this.timerScroll.Interval = 500;
-            this.timerScroll.Tick += new System.EventHandler(this.timerScroll_Tick);
-            // 
             // pb_Image
             // 
             this.pb_Image.Location = new System.Drawing.Point(3, 3);
@@ -73,11 +66,12 @@
             // lbl_CurFrame
             // 
             this.lbl_CurFrame.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_CurFrame.Location = new System.Drawing.Point(153, 0);
+            this.lbl_CurFrame.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_CurFrame.Location = new System.Drawing.Point(167, 0);
             this.lbl_CurFrame.Name = "lbl_CurFrame";
-            this.lbl_CurFrame.Size = new System.Drawing.Size(172, 23);
+            this.lbl_CurFrame.Size = new System.Drawing.Size(144, 37);
             this.lbl_CurFrame.TabIndex = 2;
-            this.lbl_CurFrame.Text = "Frame - of -";
+            this.lbl_CurFrame.Text = "Frame\r\n-";
             this.lbl_CurFrame.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // p_Image
@@ -89,32 +83,33 @@
             this.p_Image.Controls.Add(this.pb_Image);
             this.p_Image.Location = new System.Drawing.Point(0, 0);
             this.p_Image.Name = "p_Image";
-            this.p_Image.Size = new System.Drawing.Size(478, 165);
+            this.p_Image.Size = new System.Drawing.Size(478, 151);
             this.p_Image.TabIndex = 3;
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.lbl_Vmaf2, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.lbl_CurFrame, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.lbl_Vmaf1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 168);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 154);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(478, 23);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(478, 37);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // lbl_Vmaf2
             // 
             this.lbl_Vmaf2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_Vmaf2.Location = new System.Drawing.Point(331, 0);
+            this.lbl_Vmaf2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Vmaf2.Location = new System.Drawing.Point(317, 0);
             this.lbl_Vmaf2.Name = "lbl_Vmaf2";
-            this.lbl_Vmaf2.Size = new System.Drawing.Size(144, 23);
+            this.lbl_Vmaf2.Size = new System.Drawing.Size(158, 37);
             this.lbl_Vmaf2.TabIndex = 4;
             this.lbl_Vmaf2.Text = "-";
             this.lbl_Vmaf2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -122,9 +117,10 @@
             // lbl_Vmaf1
             // 
             this.lbl_Vmaf1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_Vmaf1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Vmaf1.Location = new System.Drawing.Point(3, 0);
             this.lbl_Vmaf1.Name = "lbl_Vmaf1";
-            this.lbl_Vmaf1.Size = new System.Drawing.Size(144, 23);
+            this.lbl_Vmaf1.Size = new System.Drawing.Size(158, 37);
             this.lbl_Vmaf1.TabIndex = 3;
             this.lbl_Vmaf1.Text = "-";
             this.lbl_Vmaf1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -150,7 +146,6 @@
 
         private System.Windows.Forms.TrackBar tb_Scroll;
         private System.Windows.Forms.PictureBox pb_Image;
-        private System.Windows.Forms.Timer timerScroll;
         private System.Windows.Forms.Label lbl_CurFrame;
         private PanelNoScroll p_Image;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;

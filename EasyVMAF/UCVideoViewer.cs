@@ -27,6 +27,8 @@ namespace EasyVMAF
         Cy4mReader m_pReader1 = new Cy4mReader();
         Cy4mReader m_pReader2 = new Cy4mReader();
         bool m_b1IsOrg = false;
+        string m_strFile1 = "";
+        string m_strFile2 = "";
         List<double> m_lstVmaf1 = new List<double>();
         List<double> m_lstVmaf2 = new List<double>();
 
@@ -77,9 +79,9 @@ namespace EasyVMAF
         {
             m_b1IsOrg = true;
             foreach (var x in pCompare_.Chart_Series_VMAF)
-                m_lstVmaf2.Add(x.YValues[0]);
+                m_lstVmaf1.Add(x.YValues[0]);
 
-            SetVideos(strOrgFile_, pCompare_.ConvertedFileDecoded);
+            SetVideos(pCompare_.ConvertedFileDecoded, strOrgFile_);
         }
 
         private void SetVideos(string strVideo1_, string strVideo2_)
@@ -88,7 +90,7 @@ namespace EasyVMAF
             {
                 lbl_CurFrame.ForeColor = Color.Red;
                 lbl_CurFrame.Height = 30;
-                lbl_CurFrame.Text = "One of the video files does not exist!\r\n";
+                lbl_CurFrame.Text = "One of the video files does not exist!";
                 if (CConfig.AutoDeleteTempFiles)
                     lbl_CurFrame.Text += "Please turn off 'Delete temporary files automatically' in settings.";
                 tb_Scroll.Enabled = false;
@@ -104,45 +106,64 @@ namespace EasyVMAF
                 return;
             }
 
+            m_strFile1 = Path.GetFileNameWithoutExtension(strVideo1_);
+            m_strFile2 = Path.GetFileNameWithoutExtension(strVideo2_);
+
             if (m_pReader1.FrameCount < m_pReader2.FrameCount)
                 tb_Scroll.Maximum = m_pReader1.FrameCount - 1;
             else
                 tb_Scroll.Maximum = m_pReader2.FrameCount - 1;
             tb_Scroll.TickFrequency = 100 / tb_Scroll.Maximum;
 
-            ShowImage(pb_Image.Width / 2);
+            ShowImage(tb_Scroll.Value, pb_Image.Width / 2);
         }
 
         #endregion
 
         #region --- Show image ---
 
+        bool m_bLoadingFrame = false;
+        bool m_bNeedsLoadingFrame = false;
+
         private void tb_Scroll_ValueChanged(object sender, EventArgs e)
         {
-            if(timerScroll.Enabled)
-                timerScroll.Stop();
-            timerScroll.Start();
+            lbl_CurFrame.Text = $"Frame\r\n{tb_Scroll.Value + 1} / {tb_Scroll.Maximum + 1}";
+            if(m_bLoadingFrame)
+            {
+                m_bNeedsLoadingFrame = true;
+                return;
+            }
+            m_bLoadingFrame = true;
+            new Task(() =>
+            {
+                do
+                {
+                    m_bNeedsLoadingFrame = false;
+                    int iFrame = 0;
+                    int iPos = 0;
+                    Invoke((MethodInvoker)delegate
+                    {
+                        iFrame = tb_Scroll.Value;
+                        iPos = pb_Image.Width / 2;
+                    });
+                    ShowImage(iFrame, iPos);
+                } while (m_bNeedsLoadingFrame);
+                m_bLoadingFrame = false;
+            }).Start();
         }
 
-        private void timerScroll_Tick(object sender, EventArgs e)
+        void ShowImage(int iFrame_, int iPos_)
         {
-            ShowImage(pb_Image.Width / 2);
-            timerScroll.Stop();
-        }
-
-        void ShowImage(int iPos_)
-        {
-            if (m_iLastPos == iPos_ && m_iLastFrame == tb_Scroll.Value)
+            if (m_iLastPos == iPos_ && m_iLastFrame == iFrame_)
                 return;
 
             m_iLastPos = iPos_;
-            tb_Scroll.Enabled = false;
 
-            if (m_iLastFrame != tb_Scroll.Value)
+            if (m_iLastFrame != iFrame_)
             {
-                m_pBitmap1 = m_pReader1.ReadFrame(tb_Scroll.Value);
-                m_pBitmap2 = m_pReader2.ReadFrame(tb_Scroll.Value);
-                m_iLastFrame = tb_Scroll.Value;
+                m_pBitmap1 = m_pReader1.ReadFrame(iFrame_);
+                m_pBitmap2 = m_pReader2.ReadFrame(iFrame_);
+                m_iLastFrame = iFrame_;
             }
 
             if (m_pBitmapDraw == null)
@@ -150,7 +171,10 @@ namespace EasyVMAF
                 m_pBitmapDraw = (Bitmap)m_pBitmap1.Clone();
                 m_pGraphicsDraw = Graphics.FromImage(m_pBitmapDraw);
                 pb_Image.Image = m_pBitmapDraw;
-                pb_Image.Size = m_pBitmapDraw.Size;
+                Invoke((MethodInvoker)delegate
+                {
+                    pb_Image.Size = m_pBitmapDraw.Size;
+                });
             }
 
             int iRealPos = Convert.ToInt32((double)m_pBitmapDraw.Width / (double)pb_Image.Width * (double)iPos_);
@@ -160,21 +184,28 @@ namespace EasyVMAF
             m_pGraphicsDraw.DrawImage(m_pBitmap2, iRealPos, 0, new Rectangle(iRealPos, 0, m_pBitmap2.Width - iRealPos, m_pBitmap2.Height), GraphicsUnit.Pixel);
             m_pGraphicsDraw.DrawLine(new Pen(Color.White), new Point(iRealPos, 0), new Point(iRealPos, m_pBitmapDraw.Height));
 
+            Invoke((MethodInvoker)delegate
+            {
+                pb_Image.Image = m_pBitmapDraw;
 
-            pb_Image.Image = m_pBitmapDraw;
-
-            tb_Scroll.Enabled = true;
-            lbl_CurFrame.Text = $"Frame {tb_Scroll.Value + 1} of {tb_Scroll.Maximum + 1}";
-            if (m_b1IsOrg)
-                lbl_Vmaf1.Text = "VMAF1: Original";
-            else
-                lbl_Vmaf1.Text = "VMAF1: " + m_lstVmaf1[tb_Scroll.Value].ToString(); ;
-                lbl_Vmaf2.Text = "VMAF2: " + m_lstVmaf2[tb_Scroll.Value].ToString(); ;
+                tb_Scroll.Enabled = true;
+                lbl_CurFrame.Text = $"Frame\r\n{tb_Scroll.Value + 1} / {tb_Scroll.Maximum + 1}";
+                if (m_b1IsOrg)
+                    lbl_Vmaf2.Text = "VMAF1: 100.0\r\n" + m_strFile2;
+                else
+                    lbl_Vmaf2.Text = "VMAF2: " + m_lstVmaf2[tb_Scroll.Value].ToString() + "\r\n" + m_strFile2;
+                lbl_Vmaf1.Text = "VMAF1: " + m_lstVmaf1[tb_Scroll.Value].ToString() + "\r\n" + m_strFile1;
+            });
+            
         }
 
         private void pb_Image_MouseMove(object sender, MouseEventArgs e)
         {
-            ShowImage(e.X);
+            if (m_bLoadingFrame)
+                return;
+
+            m_bLoadingFrame = true;
+            ShowImage(tb_Scroll.Value, e.X);
 
             if (e.Button == MouseButtons.Left)
             {
@@ -182,6 +213,7 @@ namespace EasyVMAF
                     pb_Image.Location.X - Convert.ToInt32(Math.Floor((m_iInitMouseX - e.X) * m_dblZoom)),
                     pb_Image.Location.Y - Convert.ToInt32(Math.Floor((m_iInitMouseY - e.Y) * m_dblZoom)));
             }
+            m_bLoadingFrame = false;
         }
 
         #endregion
@@ -256,6 +288,16 @@ namespace EasyVMAF
                 p_Image.VerticalScroll.Value = y;
             }
             catch { }
+        }
+
+        #endregion
+
+        #region --- Go to video frame ---
+
+        public void GoToFrame(int iFrame_)
+        {
+            tb_Scroll.Value = iFrame_;
+            ShowImage(iFrame_, pb_Image.Width / 2);
         }
 
         #endregion
