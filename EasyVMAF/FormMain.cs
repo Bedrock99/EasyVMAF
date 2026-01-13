@@ -42,21 +42,6 @@ namespace EasyVMAF
             CConfig.LoadForm(this);
             dgv_ConvertedFiles.DataSource = m_lstConvertedFiles;
             dgv_ConvertedFiles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-#if DEBUG
-            tb_BrowseOrgFile.Text = @"Y:\_TEST_HANDBRAKE\TerminatorGenisys_1.mkv";
-            m_lstConvertedFiles.Add(new CFile(@"Y:\_TEST_HANDBRAKE\TerminatorGenisys_1.mkv"));
-            foreach(FileInfo f in new DirectoryInfo(@"Y:\_TEST_HANDBRAKE\AV1_5").GetFiles("*.mp4"))
-                m_lstConvertedFiles.Add(new CFile(f.FullName));
-            foreach (FileInfo f in new DirectoryInfo(@"Y:\_TEST_HANDBRAKE\x264_veryslow").GetFiles("*.mp4"))
-                m_lstConvertedFiles.Add(new CFile(f.FullName));
-            foreach (FileInfo f in new DirectoryInfo(@"Y:\_TEST_HANDBRAKE\x265_veryslow").GetFiles("*.mp4"))
-                m_lstConvertedFiles.Add(new CFile(f.FullName));
-            foreach (FileInfo f in new DirectoryInfo(@"Y:\_TEST_HANDBRAKE\AV1_1").GetFiles("*.mp4"))
-                m_lstConvertedFiles.Add(new CFile(f.FullName));
-            foreach (FileInfo f in new DirectoryInfo(@"Y:\_TEST_HANDBRAKE\AV1_NVENC").GetFiles("*.mp4"))
-                m_lstConvertedFiles.Add(new CFile(f.FullName));
-#endif
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
